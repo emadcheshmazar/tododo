@@ -7,17 +7,9 @@ import CategoryModalContent from "./CategoryModalContent";
 import AddIcon from "@mui/icons-material/Add";
 import TaskModalContent from "./TaskModalContent";
 import { CategoryStore } from "../../../../redux/slices/categoriesSlice";
-import { TaskStore } from "../../../../redux/models";
 
-function TaskModals({
-  categories,
-  tasks,
-}: {
-  categories: CategoryStore;
-  tasks: TaskStore;
-}) {
+function TaskModals({ categories }: { categories: CategoryStore }) {
   const isMobile = useResponsive();
-  console.log(tasks, "tasks");
 
   const {
     categoryModal,
@@ -30,6 +22,8 @@ function TaskModals({
     setSelectedCategory,
   } = useCategoryService();
 
+  console.log(selectedCategory, "selectedCategory");
+
   const {
     handleTaskCreate,
     // handleTaskMark,
@@ -38,7 +32,7 @@ function TaskModals({
     setNewTaskDescription,
     setNewTaskTitle,
     taskModal,
-  } = useTaskService({ selectedCategory });
+  } = useTaskService({ selectedCategory, setSelectedCategory });
 
   return (
     <>
@@ -76,6 +70,7 @@ function TaskModals({
           category={selectedCategory}
           setCategory={setSelectedCategory}
           onAddCategory={() => {
+            taskModal.toggleModal({ isOpen: false });
             categoryModal.toggleModal({ isOpen: true });
           }}
           description={newTaskDescription}
@@ -100,8 +95,12 @@ function TaskModals({
         <CategoryModalContent
           caption={newCategoryCaption}
           name={newCategoryName}
-          handleCategoryCreate={handleCategoryCreate}
+          handleCategoryCreate={() => {
+            taskModal.toggleModal({ isOpen: true });
+            handleCategoryCreate();
+          }}
           onClose={() => {
+            taskModal.toggleModal({ isOpen: true });
             categoryModal.toggleModal({ isOpen: false });
           }}
           setCaption={setNewCategoryCaption}

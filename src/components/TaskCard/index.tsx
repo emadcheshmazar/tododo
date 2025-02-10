@@ -27,11 +27,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ taskConfig }) => {
   return (
     <Card
       sx={{
-        maxWidth: 180,
+        width: "100%",
         m: 1,
         borderRadius: 2,
         backgroundColor: "#fff",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+        boxShadow: "none",
+        border: "1px solid grey",
         transition: "transform 0.2s, box-shadow 0.2s",
         "&:hover": {
           transform: "scale(1.02)",

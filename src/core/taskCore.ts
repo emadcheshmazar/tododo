@@ -6,10 +6,9 @@ import {
   // removeCategoryTasks as removeCategoryTasksAction,
   toggleTask as toggleTaskAction,
 } from "../redux/slices/tasksSlice";
-import { isCategoryExistByName } from "./categoryCore";
+import { isCategoryExistById } from "./categoryCore";
 import generateUniqueId from "../utils/uniqueId";
 
-// افزودن تسک به کتگوری
 export const addTask = ({
   category,
   task,
@@ -20,7 +19,7 @@ export const addTask = ({
     description?: string;
   };
 }) => {
-  if (!isCategoryExistByName({ categoryName: category })) {
+  if (!isCategoryExistById({ categoryId: category })) {
     console.warn(`کتگوری "${category}" وجود ندارد.`);
     return;
   }
@@ -49,7 +48,7 @@ export const updateTask = ({
     completed: boolean;
   };
 }) => {
-  if (!isCategoryExistByName({ categoryName: category })) {
+  if (!isCategoryExistById({ categoryId: category })) {
     console.warn(`کتگوری "${category}" وجود ندارد.`);
     return;
   }
@@ -65,7 +64,7 @@ export const removeTask = ({
   category: string;
   taskId: string;
 }) => {
-  if (!isCategoryExistByName({ categoryName: category })) {
+  if (!isCategoryExistById({ categoryId: category })) {
     console.warn(`کتگوری "${category}" وجود ندارد.`);
     return;
   }
@@ -104,7 +103,7 @@ export const getTaskStatus = ({
   category: string;
   taskId: string;
 }): boolean | undefined => {
-  if (!isCategoryExistByName({ categoryName: category })) {
+  if (!isCategoryExistById({ categoryId: category })) {
     console.warn(`کتگوری "${category}" وجود ندارد.`);
     return;
   }

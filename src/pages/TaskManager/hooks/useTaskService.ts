@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   addTask,
   markTaskAsCompleted,
@@ -7,14 +7,17 @@ import {
 
 export const useTaskService = ({
   selectedCategory,
+  setSelectedCategory,
 }: {
   selectedCategory: string;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [newTaskDescription, setNewTaskDescription] = useState<string>("");
   const [taskModalOpen, setTaskModalOpen] = useState<boolean>(false);
 
   const handleTaskCreate = () => {
+    console.log(selectedCategory, newTaskTitle);
     if (selectedCategory && newTaskTitle) {
       addTask({
         category: selectedCategory,
@@ -25,6 +28,7 @@ export const useTaskService = ({
       });
       setNewTaskTitle("");
       setNewTaskDescription("");
+      setSelectedCategory("");
       toggleTaskModal({ isOpen: false });
     }
   };

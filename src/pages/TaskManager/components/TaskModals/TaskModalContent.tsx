@@ -4,15 +4,13 @@ import {
   TextField,
   Button,
   IconButton,
-  MenuItem,
-  Select,
-  InputLabel,
   FormControl,
+  Autocomplete,
 } from "@mui/material";
-import { Close, AddTask, AddCircleOutline } from "@mui/icons-material";
+import { Close, AddTask } from "@mui/icons-material";
 import React from "react";
 import { CategoryStore } from "../../../../redux/slices/categoriesSlice";
-
+import AddIcon from "@mui/icons-material/Add";
 interface TaskModalProps {
   onClose: () => void;
   handleTaskCreate: () => void;
@@ -93,20 +91,25 @@ function TaskModalContent({
         sx={{ input: { fontSize: "1rem" } }}
       />
 
-      {/* انتخاب دسته‌بندی */}
-      <FormControl fullWidth variant="filled">
-        <InputLabel>دسته‌بندی</InputLabel>
-        <Select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {Object.values(categories).map((cat) => (
-            <MenuItem key={cat.id} value={cat.id}>
-              {cat.name}
-            </MenuItem>
-          ))}
-          <MenuItem>
+      <FormControl
+        variant="filled"
+        sx={{ display: "flex", flexDirection: "row" }}
+      >
+        <Autocomplete
+          fullWidth
+          options={Object.values(categories)}
+          getOptionLabel={(option) => option.name}
+          value={
+            Object.values(categories).find((cat) => cat.id === category) || null
+          }
+          onChange={(_, newValue) => setCategory(newValue?.id || "")}
+          renderInput={(params) => (
+            <TextField {...params} label="دسته‌بندی" variant="filled" />
+          )}
+          noOptionsText={
             <Button
               variant="outlined"
               fullWidth
-              startIcon={<AddCircleOutline />}
               onClick={onAddCategory}
               sx={{
                 borderColor: "#007bff",
@@ -119,10 +122,26 @@ function TaskModalContent({
                 "&:hover": { bgcolor: "#007bff1a", borderColor: "#0056b3" },
               }}
             >
-              افزودن کتگوری جدید
+              افزودن دسته بندی جدید
             </Button>
-          </MenuItem>
-        </Select>
+          }
+        />
+        <IconButton
+          onClick={onAddCategory}
+          sx={{
+            color: "#007bff",
+            fontWeight: "bold",
+            py: 1,
+            borderRadius: 2,
+            textTransform: "none",
+            width: "fit-content",
+            fontSize: "1rem",
+            border: "none",
+            "&:hover": { bgcolor: "#007bff1a" },
+          }}
+        >
+          <AddIcon />
+        </IconButton>
       </FormControl>
 
       <Button

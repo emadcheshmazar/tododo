@@ -5,7 +5,7 @@ import { Category } from "../../redux/slices/categoriesSlice";
 
 const useTasksState = (taskConfig: { category: Category; id: string }) => {
   const task = useSelector(
-    (state: RootState) => state.tasks[taskConfig.category.name][taskConfig.id]
+    (state: RootState) => state.tasks[taskConfig.category.id][taskConfig.id]
   );
 
   if (!task) {
