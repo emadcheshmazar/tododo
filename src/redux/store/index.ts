@@ -19,3 +19,7 @@ export const AppReduxStore = configureStore({
 
 export const persistor = persistStore(AppReduxStore);
 export type RootState = ReturnType<typeof AppReduxStore.getState>;
+
+AppReduxStore.subscribe(() => {
+  console.log(AppReduxStore.getState(), "redux store");
+});

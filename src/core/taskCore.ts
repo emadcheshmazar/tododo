@@ -7,7 +7,7 @@ import {
   toggleTask as toggleTaskAction,
 } from "../redux/slices/tasksSlice";
 import { isCategoryExistByName } from "./categoryCore";
-// import { v4 as uuidv4 } from "uuid";
+import generateUniqueId from "../utils/uniqueId";
 
 // افزودن تسک به کتگوری
 export const addTask = ({
@@ -26,7 +26,7 @@ export const addTask = ({
   }
 
   const newTask = {
-    id: "uuidv4()",
+    id: generateUniqueId(),
     category,
     title: task.title,
     description: task.description,

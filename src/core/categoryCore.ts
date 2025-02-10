@@ -4,7 +4,7 @@ import {
   removeCategory as removeCategoryAction,
   updateCategory as updateCategoryAction,
 } from "../redux/slices/categoriesSlice";
-// import { v4 as uuidv4 } from "uuid";
+import generateUniqueId from "../utils/uniqueId";
 
 //  بررسی موجود بودن کتگوری با نام
 export const isCategoryExistByName = ({
@@ -41,7 +41,7 @@ export const addCategory = ({
   }
 
   const newCategory = {
-    id: "uuidv4()",
+    id: generateUniqueId(),
     name,
     caption,
   };

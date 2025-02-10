@@ -11,6 +11,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  direction: rtl; /* اضافه کردن جهت راست به چپ */
+  text-align: right; /* تنظیم تراز متن به سمت راست */
 }
 
 a {
@@ -28,6 +31,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  direction: rtl; /* راست به چپ کردن بدنه */
+  text-align: right; /* تراز کردن متن در بدنه */
 }
 
 h1 {

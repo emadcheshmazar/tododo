@@ -1,68 +1,77 @@
 // src/components/TaskCard/TaskCard.tsx
 import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import useTaskState from "../../hooks/redux/useTaksState";
+import { Card, Typography, Checkbox, Box } from "@mui/material";
+import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
+import useTaskState from "../../hooks/redux/useTasksState";
 import {
   markTaskAsCompleted,
   unmarkTaskAsCompleted,
 } from "../../core/taskCore";
+import { Category } from "../../redux/slices/categoriesSlice";
 
 interface TaskCardProps {
-  taskConfig: { category: string; id: string }; // کانفیگ تسک
+  taskConfig: { category: Category; id: string };
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ taskConfig }) => {
-  // استفاده از هوک ما برای دریافت وضعیت تسک
   const task = useTaskState(taskConfig);
 
   const handleChange = (checked: boolean) => {
     if (checked) {
       markTaskAsCompleted({ category: task.category, id: task.id });
     } else {
-      unmarkTaskAsCompleted({
-        category: task.category,
-        id: task.id,
-      });
+      unmarkTaskAsCompleted({ category: task.category, id: task.id });
     }
   };
 
   return (
-    <Card sx={{ maxWidth: 345, m: 2 }}>
-      <CardContent>
-        <Typography variant="h5" component="div" gutterBottom>
-          {task.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {task.description}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          وضعیت: {task.completed ? "تکمیل شده" : "فعال"}
-        </Typography>
-        {/* {task.dueDate && (
-          <Typography variant="body2" color="text.secondary">
-            تاریخ انجام: {task.dueDate}
+    <Card
+      sx={{
+        maxWidth: 180,
+        m: 1,
+        borderRadius: 2,
+        backgroundColor: "#fff",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+        transition: "transform 0.2s, box-shadow 0.2s",
+        "&:hover": {
+          transform: "scale(1.02)",
+          boxShadow: "0 3px 8px rgba(0,0,0,0.15)",
+        },
+        p: "8px 16px",
+      }}
+    >
+      <Box sx={{ p: 0, m: 0 }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Checkbox
+            checked={task.completed}
+            onChange={(e) => handleChange(e.target.checked)}
+            icon={<RadioButtonUnchecked fontSize="small" />}
+            checkedIcon={
+              <CheckCircle fontSize="small" sx={{ color: "green" }} />
+            }
+            sx={{ p: 0, ml: 1 }}
+          />
+          <Typography
+            variant="subtitle1"
+            sx={{
+              textDecoration: task.completed ? "line-through" : "none",
+              fontSize: "1.05rem",
+              fontWeight: 800,
+              color: "#333",
+            }}
+          >
+            {task.title}
           </Typography>
-        )} */}
-      </CardContent>
-      <CardActions>
-        <Checkbox
-          checked={task.completed}
-          onChange={(e) => handleChange(e.target.checked)}
-          color="primary"
-        />
-        <Button
-          onClick={() => handleChange(!task.completed)}
-          variant="contained"
-          color="primary"
-        >
-          {task.completed ? "علامت به عنوان فعال" : "علامت به عنوان تکمیل شده"}
-        </Button>
-      </CardActions>
+        </Box>
+        {task.description && (
+          <Typography
+            variant="body2"
+            sx={{ mt: 1, color: "#666", fontSize: "0.85rem" }}
+          >
+            {task.description}
+          </Typography>
+        )}
+      </Box>
     </Card>
   );
 };
