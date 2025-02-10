@@ -12,7 +12,6 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
   const isMobile = useResponsive();
 
   const {
-    categoryModal,
     handleCategoryCreate,
     newCategoryCaption,
     newCategoryName,
@@ -20,20 +19,22 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
     setNewCategoryName,
     selectedCategory,
     setSelectedCategory,
+    isCategoryModalOpen,
+    toggleCategoryModal,
   } = useCategoryService();
-
-  console.log(selectedCategory, "selectedCategory");
 
   const {
     handleTaskCreate,
-    // handleTaskMark,
     newTaskDescription,
     newTaskTitle,
     setNewTaskDescription,
     setNewTaskTitle,
-    taskModal,
+    toggleTaskModal,
+    isTaskModalOpen,
+    handleTaskEdit,
   } = useTaskService({ selectedCategory, setSelectedCategory });
 
+  console.log({ isTaskModalOpen }, "isTaskModalOpen");
   return (
     <>
       <Box
@@ -50,7 +51,7 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
           color="primary"
           startIcon={<AddIcon sx={{ mr: "-8px", ml: "8px" }} />}
           onClick={() => {
-            taskModal.toggleModal({ isOpen: true });
+            toggleTaskModal({ isOpen: true });
           }}
         >
           افزودن تسک
@@ -58,9 +59,9 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
       </Box>
       <CustomModal
         config={{
-          open: taskModal.isOpen,
+          open: isTaskModalOpen,
           onClose() {
-            taskModal.toggleModal({ isOpen: false });
+            toggleTaskModal({ isOpen: false });
           },
           type: isMobile ? "mobile" : "desktop",
         }}
@@ -70,14 +71,15 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
           category={selectedCategory}
           setCategory={setSelectedCategory}
           onAddCategory={() => {
-            taskModal.toggleModal({ isOpen: false });
-            categoryModal.toggleModal({ isOpen: true });
+            toggleTaskModal({ isOpen: false });
+            toggleCategoryModal({ isOpen: true });
           }}
           description={newTaskDescription}
           title={newTaskTitle}
           handleTaskCreate={handleTaskCreate}
+          handleTaskEdit={handleTaskEdit}
           onClose={() => {
-            taskModal.toggleModal({ isOpen: false });
+            toggleTaskModal({ isOpen: false });
           }}
           setDescription={setNewTaskDescription}
           setTitle={setNewTaskTitle}
@@ -85,9 +87,9 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
       </CustomModal>
       <CustomModal
         config={{
-          open: categoryModal.isOpen,
+          open: isCategoryModalOpen,
           onClose() {
-            categoryModal.toggleModal({ isOpen: false });
+            toggleCategoryModal({ isOpen: false });
           },
           type: isMobile ? "mobile" : "desktop",
         }}
@@ -96,12 +98,12 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
           caption={newCategoryCaption}
           name={newCategoryName}
           handleCategoryCreate={() => {
-            taskModal.toggleModal({ isOpen: true });
+            toggleTaskModal({ isOpen: true });
             handleCategoryCreate();
           }}
           onClose={() => {
-            taskModal.toggleModal({ isOpen: true });
-            categoryModal.toggleModal({ isOpen: false });
+            toggleTaskModal({ isOpen: true });
+            toggleCategoryModal({ isOpen: false });
           }}
           setCaption={setNewCategoryCaption}
           setName={setNewCategoryName}

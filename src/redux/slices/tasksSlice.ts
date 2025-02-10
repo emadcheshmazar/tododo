@@ -31,13 +31,28 @@ const tasksSlice = createSlice({
         state[category] = { [id]: task };
       }
     },
-    updateTask: (state, action: PayloadAction<{ task: Task }>) => {
-      const { task } = action.payload;
-      const { category, id } = task;
+    updateTask: (
+      state,
+      action: PayloadAction<{
+        category: string;
+        id: string;
+        title: string;
+        description?: string;
+      }>
+    ) => {
+      const { category, id, title, description } = action.payload;
+      console.log("3");
+
       if (state[category] && state[category][id]) {
-        state[category][id] = { ...state[category][id], ...task };
+        if (title !== undefined) {
+          state[category][id].title = title;
+        }
+        if (description !== undefined) {
+          state[category][id].description = description;
+        }
       }
     },
+
     removeTask: (
       state,
       action: PayloadAction<{ category: string; id: string }>

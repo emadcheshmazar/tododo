@@ -8,6 +8,8 @@ import {
 } from "../redux/slices/tasksSlice";
 import { isCategoryExistById } from "./categoryCore";
 import generateUniqueId from "../utils/uniqueId";
+import { removeLocalData, storeLocalData } from "../utils/localStorage";
+import { Task } from "../redux/models";
 
 export const addTask = ({
   category,
@@ -15,48 +17,56 @@ export const addTask = ({
 }: {
   category: string;
   task: {
-    title: string;
-    description?: string;
+    title: string | null;
+    description?: string | null;
   };
 }) => {
   if (!isCategoryExistById({ categoryId: category })) {
     console.warn(`کتگوری "${category}" وجود ندارد.`);
     return;
   }
+  if (task.title) {
+    const newTask = {
+      id: generateUniqueId(),
+      category,
+      title: task.title,
+      ...(task.description && { description: task.description }),
+      completed: false,
+    };
 
-  const newTask = {
-    id: generateUniqueId(),
-    category,
-    title: task.title,
-    description: task.description,
-    completed: false,
-  };
-
-  AppReduxStore.dispatch(initTaskAction({ task: newTask }));
+    console.log(newTask, "newTask");
+    AppReduxStore.dispatch(initTaskAction({ task: newTask }));
+  }
 };
 
-// ویرایش تسک داخل کتگوری
 export const updateTask = ({
   category,
-  task,
+  title,
+  description,
+  id,
 }: {
   category: string;
-  task: {
-    id: string;
-    title: string;
-    description?: string;
-    completed: boolean;
-  };
+  title: string;
+  description?: string;
+  id: string;
 }) => {
   if (!isCategoryExistById({ categoryId: category })) {
     console.warn(`کتگوری "${category}" وجود ندارد.`);
     return;
   }
 
-  AppReduxStore.dispatch(updateTaskAction({ task: { ...task, category } }));
+  console.log("1");
+
+  const editedTask = {
+    id,
+    category,
+    title: title,
+    ...(description !== null && { description }),
+  };
+  console.log(editedTask, "edited task");
+  AppReduxStore.dispatch(updateTaskAction({ ...editedTask }));
 };
 
-// حذف تسک از کتگوری
 export const removeTask = ({
   category,
   taskId,
@@ -72,7 +82,6 @@ export const removeTask = ({
   AppReduxStore.dispatch(removeTaskAction({ category, id: taskId }));
 };
 
-// متد مارک کردن تسک (تکمیل تسک)
 export const markTaskAsCompleted = ({
   category,
   id,
@@ -80,11 +89,9 @@ export const markTaskAsCompleted = ({
   category: string;
   id: string;
 }) => {
-  // استفاده از toggleTask برای تغییر وضعیت به true (مارک کردن)
   AppReduxStore.dispatch(toggleTaskAction({ category, id }));
 };
 
-// متد بدون مارک کردن تسک (غیرفعال کردن)
 export const unmarkTaskAsCompleted = ({
   category,
   id,
@@ -92,10 +99,9 @@ export const unmarkTaskAsCompleted = ({
   category: string;
   id: string;
 }) => {
-  // ابتدا تسک رو پیدا می‌کنیم، سپس وضعیت completed رو به false تغییر می‌دهیم.
   AppReduxStore.dispatch(toggleTaskAction({ category, id }));
 };
-// گرفتن وضعیت تسک داخل کتگوری
+
 export const getTaskStatus = ({
   category,
   taskId,
@@ -115,4 +121,12 @@ export const getTaskStatus = ({
   } else {
     console.warn(`تسک با ID ${taskId} در کتگوری ${category} یافت نشد.`);
   }
+};
+
+export const setTaskForEdit = ({ task }: { task: Task }) => {
+  storeLocalData("task4Edit", task);
+};
+
+export const clearTaskForEdit = () => {
+  removeLocalData("task4Edit");
 };

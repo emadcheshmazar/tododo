@@ -1,37 +1,83 @@
 import React, { useState } from "react";
 import {
   addTask,
+  clearTaskForEdit,
   markTaskAsCompleted,
   unmarkTaskAsCompleted,
+  updateTask,
 } from "../../../core/taskCore";
+import { closeModalById, openModalById } from "../../../core/modalCore";
+import { useModalState } from "../../../hooks/generals/useModalOpen";
+import { Task } from "../../../redux/models";
+import { getLocalData } from "../../../utils/localStorage";
 
-export const useTaskService = ({
-  selectedCategory,
-  setSelectedCategory,
-}: {
-  selectedCategory: string;
-  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+export const useTaskService = (args?: {
+  selectedCategory: string | null;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
-  const [newTaskTitle, setNewTaskTitle] = useState<string>("");
-  const [newTaskDescription, setNewTaskDescription] = useState<string>("");
-  const [taskModalOpen, setTaskModalOpen] = useState<boolean>(false);
+  const [newTaskTitle, setNewTaskTitle] = useState<string | null>(null);
+  const [newTaskDescription, setNewTaskDescription] = useState<string | null>(
+    null
+  );
+  const isTaskModalOpen: boolean = useModalState({ modalId: "taskModal" });
 
   const handleTaskCreate = () => {
-    console.log(selectedCategory, newTaskTitle);
-    if (selectedCategory && newTaskTitle) {
+    if (args?.selectedCategory && newTaskTitle) {
+      const newTask = {
+        title: newTaskTitle,
+        ...(newTaskDescription && { description: newTaskDescription }),
+      };
+
       addTask({
-        category: selectedCategory,
-        task: {
-          title: newTaskTitle,
-          description: newTaskDescription,
-        },
+        category: args?.selectedCategory,
+        task: newTask,
       });
-      setNewTaskTitle("");
-      setNewTaskDescription("");
-      setSelectedCategory("");
-      toggleTaskModal({ isOpen: false });
+
+      setNewTaskTitle(null);
+      setNewTaskDescription(null);
+      args?.setSelectedCategory("");
+      closeModalById("taskModal");
     }
   };
+
+  const editeTask: Task = getLocalData("task4Edit") as Task;
+
+  const handleTaskEdit = () =>
+    //   {
+    //   description,
+    //   title,
+    //   category,
+    //   id,
+    // }: {
+    //   title: string;
+    //   description?: string;
+    //   category: string;
+    //   id: string;
+    // }
+    {
+      console.log("a");
+      // updateTask({
+      //   category,
+      //   ...(description && { description }),
+      //   title,
+      //   id,
+      // });
+      // description !== null ? description : editeTask?.description || ""
+      const updatedTask: Task = {
+        title: newTaskTitle !== null ? newTaskTitle : editeTask?.title || "",
+        description:
+          newTaskDescription !== null
+            ? newTaskDescription
+            : editeTask?.description || "",
+        id: editeTask.id,
+        category: editeTask.category,
+        completed: editeTask.completed,
+      };
+
+      console.log(updatedTask, "updatedTask");
+      updateTask(updatedTask);
+      toggleTaskModal({ isOpen: false });
+    };
 
   const handleTaskMark = (
     category: string,
@@ -46,7 +92,14 @@ export const useTaskService = ({
   };
 
   const toggleTaskModal = ({ isOpen }: { isOpen: boolean }) => {
-    setTaskModalOpen(isOpen);
+    if (isOpen) {
+      openModalById("taskModal");
+    } else {
+      clearTaskForEdit();
+      setNewTaskTitle(null);
+      setNewTaskDescription(null);
+      closeModalById("taskModal");
+    }
   };
 
   return {
@@ -55,10 +108,9 @@ export const useTaskService = ({
     newTaskDescription,
     setNewTaskDescription,
     handleTaskCreate,
+    handleTaskEdit,
     handleTaskMark,
-    taskModal: {
-      isOpen: taskModalOpen,
-      toggleModal: toggleTaskModal,
-    },
+    toggleTaskModal,
+    isTaskModalOpen,
   };
 };

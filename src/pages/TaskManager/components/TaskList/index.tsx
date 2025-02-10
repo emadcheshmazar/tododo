@@ -23,7 +23,7 @@ function TaskList({
         .filter(
           (category) =>
             tasks[category.id] && Object.keys(tasks[category.id]).length > 0
-        ) // فقط دسته‌هایی که تسک دارند
+        )
         .map((category) => {
           const categoryTasks = Object.values(tasks[category.id]); // گرفتن لیست تسک‌های دسته
 

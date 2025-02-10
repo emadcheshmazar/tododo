@@ -5,10 +5,10 @@ import React from "react";
 interface CategoryModalProps {
   onClose: () => void;
   handleCategoryCreate: () => void;
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  caption: string;
-  setCaption: React.Dispatch<React.SetStateAction<string>>;
+  name: string | null;
+  setName: React.Dispatch<React.SetStateAction<string | null>>;
+  caption: string | null;
+  setCaption: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 function CategoryModalContent({
