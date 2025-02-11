@@ -11,6 +11,32 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  direction: rtl; /* اضافه کردن جهت راست به چپ */
+  text-align: right; /* تنظیم تراز متن به سمت راست */
+  overflow-x: hidden; /* جلوگیری از افقی شدن محتوا */
+}
+/* اسکرول بار برای مرورگرهای مبتنی بر Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  display: none;
+  width: 6px; /* کوچیک‌تر کردن اسکرول بار */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* حذف بک‌گراند */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* رنگ دسته اسکرول */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* رنگ روی هاور */
+}
+
+::-webkit-scrollbar-button {
+  display: none; /* حذف فلش‌های بالا و پایین */
 }
 
 a {
@@ -28,6 +54,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  direction: rtl; /* راست به چپ کردن بدنه */
+  text-align: right; /* تراز کردن متن در بدنه */
 }
 
 h1 {
