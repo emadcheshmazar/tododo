@@ -14,7 +14,9 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
 }) => {
   return (
     <Box sx={{ display: "flex", gap: 1, mb: 2, flexWrap: "wrap" }}>
-      <Typography variant="caption">فیلترها: </Typography>
+      {categories && categories.length > 0 && (
+        <Typography variant="caption">فیلترها: </Typography>
+      )}
       {categories.map((category) => (
         <ChipBox
           key={category.id}

@@ -1,4 +1,3 @@
-// src/redux/slices/categoriesSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Category {
@@ -11,7 +10,9 @@ export type CategoryStore = {
   [id: string]: Category;
 };
 
-const initialState: CategoryStore = {};
+const initialState: CategoryStore = {
+  default: { id: "default", name: "عمومی", caption: "کتگوری پیش‌فرض" },
+};
 
 const categoriesSlice = createSlice({
   name: "categories",
@@ -29,7 +30,9 @@ const categoriesSlice = createSlice({
     },
     removeCategory: (state, action: PayloadAction<{ id: string }>) => {
       const { id } = action.payload;
-      delete state[id];
+      if (id !== "default") {
+        delete state[id];
+      }
     },
   },
 });
