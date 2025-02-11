@@ -2,12 +2,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Task {
-  id: string; // شناسه تسک (مثلاً "running")
-  category: string; // دسته‌بندی (مثلاً "sports")
-  title: string; // عنوان تسک
-  description?: string; // توضیحات (اختیاری)
-  completed: boolean; // وضعیت تکمیل یا فعال بودن
-  // فیلدهای دیگر هم می‌توانید اضافه کنید
+  id: string;
+  category: string;
+  title: string;
+  description?: string;
+  completed: boolean;
 }
 
 export type TaskStore = {
