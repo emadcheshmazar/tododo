@@ -24,6 +24,7 @@ function TaskModalContent({
   onAddCategory,
   handleTaskEdit,
   editTask,
+  weekProps,
 }: ITaskModalProps) {
   return (
     <Box
@@ -135,6 +136,28 @@ function TaskModalContent({
         >
           <AddIcon />
         </IconButton>
+      </FormControl>
+
+      <FormControl
+        variant="filled"
+        sx={{ display: "flex", flexDirection: "row" }}
+      >
+        <Autocomplete
+          fullWidth
+          options={weekProps.weekDays}
+          value={
+            weekProps.selectedDate !== null
+              ? weekProps.selectedDate
+              : editTask?.selectedDate || ""
+          }
+          onChange={(_, newValue) => {
+            console.log(newValue, "newValue");
+            weekProps.setSelectedDate(newValue || "");
+          }}
+          renderInput={(params) => (
+            <TextField {...params} label="روز هفته" variant="filled" />
+          )}
+        />
       </FormControl>
 
       <Button

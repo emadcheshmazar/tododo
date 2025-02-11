@@ -7,7 +7,6 @@ export const isModalExisted = (modalId: string): boolean => {
 };
 
 export const openModalById = (modalId: string) => {
-  //   const state = AppReduxStore.getState();
 
   if (!isModalExisted(modalId)) {
     AppReduxStore.dispatch(createModal(modalId)); 

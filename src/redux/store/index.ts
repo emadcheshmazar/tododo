@@ -8,7 +8,7 @@ import { TypedUseSelectorHook, useSelector } from "react-redux";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["tasks", "categories"], // ذخیره تسک‌ها و دسته‌ها در localStorage
+  whitelist: ["tasks", "categories", 'date'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

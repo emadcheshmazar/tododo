@@ -5,6 +5,9 @@ import { useTaskManagerService } from "./hooks/useTaskManagerService";
 import TaskList from "./components/TaskList";
 import { useCategoryService } from "./hooks/useCategoryService";
 import { useTaskService } from "./hooks/useTaskService";
+// import { useDateService } from "./hooks/useDateService";
+import Week from "./components/Week";
+import { useDateService } from "./hooks/useDateService";
 
 const TaskManager: React.FC = () => {
   const {
@@ -40,6 +43,9 @@ const TaskManager: React.FC = () => {
     editTask,
   } = useTaskService({ selectedCategory, setSelectedCategory });
 
+  const { weekDays, selectedDate, setSelectedDate, getDayName } =
+    useDateService();
+
   return (
     <Box
       sx={{
@@ -55,6 +61,8 @@ const TaskManager: React.FC = () => {
         m: "0 auto",
       }}
     >
+      <Week />
+
       <Box
         sx={{
           width: "100%",
@@ -106,6 +114,12 @@ const TaskManager: React.FC = () => {
             setSelectedCategory,
             isCategoryModalOpen,
             toggleCategoryModal,
+          }}
+          weekProps={{
+            weekDays,
+            selectedDate,
+            setSelectedDate,
+            getDayName,
           }}
         />
       </Box>

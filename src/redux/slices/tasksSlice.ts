@@ -1,13 +1,12 @@
-// src/redux/slices/tasksSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Task {
-  id: string; // شناسه تسک (مثلاً "running")
-  category: string; // دسته‌بندی (مثلاً "sports")
-  title: string; // عنوان تسک
-  description?: string; // توضیحات (اختیاری)
-  completed: boolean; // وضعیت تکمیل یا فعال بودن
-  // فیلدهای دیگر هم می‌توانید اضافه کنید
+  id: string;
+  category: string;
+  title: string;
+  description?: string;
+  completed: boolean;
+  date: string;
 }
 
 export type TaskStore = {
@@ -38,10 +37,10 @@ const tasksSlice = createSlice({
         id: string;
         title: string;
         description?: string;
+        date: string;
       }>
     ) => {
-      const { category, id, title, description } = action.payload;
-      console.log("3");
+      const { category, id, title, description, date } = action.payload;
 
       if (state[category] && state[category][id]) {
         if (title !== undefined) {
@@ -49,6 +48,9 @@ const tasksSlice = createSlice({
         }
         if (description !== undefined) {
           state[category][id].description = description;
+        }
+        if (date !== undefined) {
+          state[category][id].date = date;
         }
       }
     },

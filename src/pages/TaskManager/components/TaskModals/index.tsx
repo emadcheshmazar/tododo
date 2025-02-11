@@ -6,16 +6,18 @@ import AddIcon from "@mui/icons-material/Add";
 import TaskModalContent from "./TaskModalContent";
 import { CategoryStore } from "../../../../redux/slices/categoriesSlice";
 import { ITaskProps } from "../../models/taskModel";
-import { ICategoryProps } from "../../models/categoryModel";
+import { ICategoryProps, IWeekProps } from "../../models/categoryModel";
 
 function TaskModals({
   categories,
   taskProps,
   categoryProps,
+  weekProps,
 }: {
   categories: CategoryStore;
   taskProps: ITaskProps;
   categoryProps: ICategoryProps;
+  weekProps: IWeekProps;
 }) {
   const isMobile = useResponsive();
   const {
@@ -27,7 +29,7 @@ function TaskModals({
     setNewTaskDescription,
     setNewTaskTitle,
     toggleTaskModal,
-    editTask
+    editTask,
   } = taskProps;
 
   const {
@@ -91,6 +93,7 @@ function TaskModals({
           setDescription={setNewTaskDescription}
           setTitle={setNewTaskTitle}
           editTask={editTask}
+          weekProps={weekProps}
         />
       </CustomModal>
       <CustomModal

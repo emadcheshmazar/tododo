@@ -1,5 +1,6 @@
 import { Task, TaskStore } from "../../../redux/models";
 import { Category, CategoryStore } from "../../../redux/slices/categoriesSlice";
+import { IWeekProps } from "./categoryModel";
 
 export interface ITaskProps {
   newTaskTitle: string | null;
@@ -25,6 +26,7 @@ export interface ITaskModalProps {
   categories: CategoryStore;
   onAddCategory: () => void;
   editTask: Task;
+  weekProps: IWeekProps;
 }
 
 export interface ITaskListProps {

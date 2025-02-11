@@ -11,6 +11,7 @@ import { useModalState } from "../../../hooks/generals/useModalOpen";
 import { Task } from "../../../redux/models";
 import { getLocalData } from "../../../utils/localStorage";
 import { Category } from "../../../redux/slices/categoriesSlice";
+import { useDateService } from "./useDateService";
 
 export const useTaskService = (args?: {
   selectedCategory: string | null;
@@ -20,12 +21,17 @@ export const useTaskService = (args?: {
   const [newTaskDescription, setNewTaskDescription] = useState<string | null>(
     null
   );
+
+  const { activeDate } = useDateService();
   const isTaskModalOpen: boolean = useModalState({ modalId: "taskModal" });
+
+  console.log(activeDate, "activeDate");
 
   const handleTaskCreate = () => {
     if (args?.selectedCategory && newTaskTitle) {
       const newTask = {
         title: newTaskTitle,
+        date: activeDate,
         ...(newTaskDescription && { description: newTaskDescription }),
       };
 
@@ -55,7 +61,6 @@ export const useTaskService = (args?: {
       completed: editeTask.completed,
     };
 
-    console.log(updatedTask, "updatedTask");
     updateTask(updatedTask);
     toggleTaskModal({ isOpen: false });
   };

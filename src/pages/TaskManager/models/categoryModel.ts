@@ -18,3 +18,9 @@ export interface ICategoryModalProps {
   caption: string | null;
   setCaption: React.Dispatch<React.SetStateAction<string | null>>;
 }
+export interface IWeekProps {
+  weekDays: string[];
+  selectedDate: string;
+  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+  getDayName: (date: string) => string;
+}

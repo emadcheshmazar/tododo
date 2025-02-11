@@ -18,6 +18,7 @@ export const addTask = ({
   category: string;
   task: {
     title: string | null;
+    date: string;
     description?: string | null;
   };
 }) => {
@@ -30,11 +31,11 @@ export const addTask = ({
       id: generateUniqueId(),
       category,
       title: task.title,
+      date: task.date,
       ...(task.description && { description: task.description }),
       completed: false,
     };
 
-    console.log(newTask, "newTask");
     AppReduxStore.dispatch(initTaskAction({ task: newTask }));
   }
 };
@@ -43,10 +44,12 @@ export const updateTask = ({
   category,
   title,
   description,
+  date,
   id,
 }: {
   category: string;
   title: string;
+  date: string;
   description?: string;
   id: string;
 }) => {
@@ -55,12 +58,11 @@ export const updateTask = ({
     return;
   }
 
-  console.log("1");
-
   const editedTask = {
     id,
     category,
-    title: title,
+    title,
+    date,
     ...(description !== null && { description }),
   };
   console.log(editedTask, "edited task");
