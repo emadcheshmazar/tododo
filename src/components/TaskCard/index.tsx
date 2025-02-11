@@ -1,6 +1,6 @@
 // src/components/TaskCard/TaskCard.tsx
 import React from "react";
-import { Card, Typography, Checkbox, Box, IconButton } from "@mui/material";
+import { Typography, Checkbox, Box, IconButton } from "@mui/material";
 import {
   CheckCircle,
   RadioButtonUnchecked,
@@ -47,14 +47,13 @@ const TaskCard: React.FC<TaskCardProps> = ({ taskConfig }) => {
   };
 
   return (
-    <Card
+    <Box
       sx={{
         width: "100%",
-        m: 1,
         p: "10px",
-        borderRadius: "12px",
+        // borderRadius: "12px",
         backgroundColor: task.completed ? "#f0fdf4" : "#fff",
-        border: `1px solid ${task.completed ? "#4caf50" : "#ccc"}`,
+        borderBottom: `1px solid ${task.completed ? "#4caf50" : "#ccc"}`,
         transition: "transform 0.2s, box-shadow 0.2s",
         display: "flex",
         alignItems: "center",
@@ -123,7 +122,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ taskConfig }) => {
           <Delete fontSize="small" />
         </IconButton>
       </Box>
-    </Card>
+    </Box>
   );
 };
 

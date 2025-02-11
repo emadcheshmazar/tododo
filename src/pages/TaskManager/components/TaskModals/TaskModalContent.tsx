@@ -8,24 +8,8 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { Close, AddTask } from "@mui/icons-material";
-import React from "react";
-import { CategoryStore } from "../../../../redux/slices/categoriesSlice";
 import AddIcon from "@mui/icons-material/Add";
-import { getLocalData } from "../../../../utils/localStorage";
-import { Task } from "../../../../redux/models";
-interface TaskModalProps {
-  onClose: () => void;
-  handleTaskCreate: () => void;
-  handleTaskEdit: () => void;
-  title: string | null;
-  setTitle: React.Dispatch<React.SetStateAction<string | null>>;
-  description: string | null;
-  setDescription: React.Dispatch<React.SetStateAction<string | null>>;
-  category: string | null;
-  setCategory: React.Dispatch<React.SetStateAction<string | null>>;
-  categories: CategoryStore;
-  onAddCategory: () => void;
-}
+import { ITaskModalProps } from "../../models/taskModel";
 
 function TaskModalContent({
   onClose,
@@ -39,10 +23,8 @@ function TaskModalContent({
   categories,
   onAddCategory,
   handleTaskEdit,
-}: TaskModalProps) {
-  const editeTask: Task = getLocalData("task4Edit") as Task;
-  console.log({ editeTask }, "modal task logs");
-
+  editTask,
+}: ITaskModalProps) {
   return (
     <Box
       sx={{
@@ -81,7 +63,7 @@ function TaskModalContent({
         label="عنوان تسک"
         variant="filled"
         fullWidth
-        value={title !== null ? title : editeTask?.title || ""}
+        value={title !== null ? title : editTask?.title || ""}
         onChange={(e) => setTitle(e.target.value)}
         sx={{ input: { fontSize: "1rem" } }}
       />
@@ -89,9 +71,7 @@ function TaskModalContent({
         label="توضیحات تسک"
         variant="filled"
         fullWidth
-        value={
-          description !== null ? description : editeTask?.description || ""
-        }
+        value={description !== null ? description : editTask?.description || ""}
         onChange={(e) => setDescription(e.target.value)}
         multiline
         rows={3}
@@ -107,14 +87,14 @@ function TaskModalContent({
           options={Object.values(categories)}
           getOptionLabel={(option) => option.name}
           value={
-            editeTask
+            editTask
               ? Object.values(categories).find(
-                  (cat) => cat.id === editeTask.category
+                  (cat) => cat.id === editTask.category
                 )
               : Object.values(categories).find((cat) => cat.id === category) ||
                 null
           }
-          disabled={!!editeTask}
+          disabled={!!editTask}
           onChange={(_, newValue) => setCategory(newValue?.id || "")}
           renderInput={(params) => (
             <TextField {...params} label="دسته‌بندی" variant="filled" />
@@ -161,8 +141,8 @@ function TaskModalContent({
         variant="contained"
         fullWidth
         startIcon={<AddTask />}
-        onClick={editeTask ? handleTaskEdit : handleTaskCreate}
-        disabled={editeTask ? false : !title || !category}
+        onClick={editTask ? handleTaskEdit : handleTaskCreate}
+        disabled={editTask ? false : !title || !category}
         sx={{
           bgcolor: "#28a745",
           color: "#fff",
@@ -174,7 +154,7 @@ function TaskModalContent({
           "&:hover": { bgcolor: "#218838" },
         }}
       >
-        {editeTask ? "ویرایش تسک" : "ایجاد تسک"}
+        {editTask ? "ویرایش تسک" : "ایجاد تسک"}
       </Button>
     </Box>
   );

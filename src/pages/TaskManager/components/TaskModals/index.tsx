@@ -1,40 +1,47 @@
 import { Box, Button } from "@mui/material";
 import CustomModal from "../../../../components/designSystems/Modal";
 import useResponsive from "../../../../hooks/generals/useResponsive";
-import { useCategoryService } from "../../hooks/useCategoryService";
-import { useTaskService } from "../../hooks/useTaskService";
 import CategoryModalContent from "./CategoryModalContent";
 import AddIcon from "@mui/icons-material/Add";
 import TaskModalContent from "./TaskModalContent";
 import { CategoryStore } from "../../../../redux/slices/categoriesSlice";
+import { ITaskProps } from "../../models/taskModel";
+import { ICategoryProps } from "../../models/categoryModel";
 
-function TaskModals({ categories }: { categories: CategoryStore }) {
+function TaskModals({
+  categories,
+  taskProps,
+  categoryProps,
+}: {
+  categories: CategoryStore;
+  taskProps: ITaskProps;
+  categoryProps: ICategoryProps;
+}) {
   const isMobile = useResponsive();
-
-  const {
-    handleCategoryCreate,
-    newCategoryCaption,
-    newCategoryName,
-    setNewCategoryCaption,
-    setNewCategoryName,
-    selectedCategory,
-    setSelectedCategory,
-    isCategoryModalOpen,
-    toggleCategoryModal,
-  } = useCategoryService();
-
   const {
     handleTaskCreate,
+    handleTaskEdit,
+    isTaskModalOpen,
     newTaskDescription,
     newTaskTitle,
     setNewTaskDescription,
     setNewTaskTitle,
     toggleTaskModal,
-    isTaskModalOpen,
-    handleTaskEdit,
-  } = useTaskService({ selectedCategory, setSelectedCategory });
+    editTask
+  } = taskProps;
 
-  console.log({ isTaskModalOpen }, "isTaskModalOpen");
+  const {
+    handleCategoryCreate,
+    isCategoryModalOpen,
+    newCategoryCaption,
+    newCategoryName,
+    selectedCategory,
+    setNewCategoryCaption,
+    setNewCategoryName,
+    setSelectedCategory,
+    toggleCategoryModal,
+  } = categoryProps;
+
   return (
     <>
       <Box
@@ -42,12 +49,12 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
           width: "100%",
           m: "0 auto 24px",
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           alignItems: "end",
         }}
       >
         <Button
-          variant="contained"
+          variant="text"
           color="primary"
           startIcon={<AddIcon sx={{ mr: "-8px", ml: "8px" }} />}
           onClick={() => {
@@ -83,6 +90,7 @@ function TaskModals({ categories }: { categories: CategoryStore }) {
           }}
           setDescription={setNewTaskDescription}
           setTitle={setNewTaskTitle}
+          editTask={editTask}
         />
       </CustomModal>
       <CustomModal

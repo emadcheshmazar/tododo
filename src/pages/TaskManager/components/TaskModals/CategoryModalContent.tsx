@@ -1,15 +1,6 @@
 import { Box, Typography, TextField, Button, IconButton } from "@mui/material";
 import { Close, AddCircleOutline } from "@mui/icons-material";
-import React from "react";
-
-interface CategoryModalProps {
-  onClose: () => void;
-  handleCategoryCreate: () => void;
-  name: string | null;
-  setName: React.Dispatch<React.SetStateAction<string | null>>;
-  caption: string | null;
-  setCaption: React.Dispatch<React.SetStateAction<string | null>>;
-}
+import { ICategoryModalProps } from "../../models/categoryModel";
 
 function CategoryModalContent({
   onClose,
@@ -18,7 +9,7 @@ function CategoryModalContent({
   setName,
   caption,
   setCaption,
-}: CategoryModalProps) {
+}: ICategoryModalProps) {
   return (
     <Box
       sx={{
